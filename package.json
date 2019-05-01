@@ -1,0 +1,37 @@
+{
+  "name": "stefano",
+  "description": "Private application",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "stevyb0t",
+  "scripts": {
+    "start": "electron .",
+    "start-dev": "electron . --dev",
+    "build-pack": "electron-builder --dir",
+    "build-dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^5.0.0",
+    "electron-builder": "^20.39.0"
+  },
+  "build": {
+    "appId": "it.stevyb0t.stefano",
+    "productName": "Stefano",
+    "copyright": "Copyright © 2019 stevyb0t",
+    "directories": {
+      "output": "production"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "_assets/images/icon.ico",
+      "uninstallerIcon": "_assets/images/icon.ico",
+      "installerHeaderIcon": "_assets/images/icon.ico",
+      "uninstallDisplayName": "Stefano",
+      "artifactName": "Stefano.exe",
+      "deleteAppDataOnUninstall": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": false,
+      "shortcutName": "Stefano"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+.idea
+.iml
+target
+package-lock.json
+production/
