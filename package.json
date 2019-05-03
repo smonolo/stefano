@@ -21,16 +21,16 @@
     "directories": {
       "output": "production"
     },
+    "win": {
+      "icon": "_assets/images/icon.ico"
+    },
     "nsis": {
-      "oneClick": true,
       "installerIcon": "_assets/images/icon.ico",
       "uninstallerIcon": "_assets/images/icon.ico",
       "installerHeaderIcon": "_assets/images/icon.ico",
       "uninstallDisplayName": "Stefano",
-      "artifactName": "Stefano.exe",
-      "deleteAppDataOnUninstall": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": false,
+      "createStartMenuShortcut": true,
       "shortcutName": "Stefano"
     }
   }
