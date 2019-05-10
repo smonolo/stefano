@@ -7,61 +7,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
-        <div class="banner" id="banner"></div>
-        <div class="title">Under development</div>
-        <div class="subtitle">This app is still under development and will be released soon.</div>
-        <div style="text-align: center;">
-            <button class="button" id="button" onclick="requestIndex();">Request</button>
+        <div class="container">
+            <div class="title">Generator</div>
+            <div class="subtitle">Generate a random number and string.</div>
+            <div class="value" id="number">0</div>
+            <div class="value" id="string">A</div>
+            <button class="button" onclick="randomNumber();">Generate</button>
         </div>
     </body>
-    <script>
-        function requestIndex() {
-            const button = $('#button');
-            const banner = $('#banner');
-
-            button.html('Requesting')
-                .attr('disabled', true)
-                .addClass('disabled');
-
-            setTimeout(() => {
-                $.ajax({
-                    url: 'http://localhost:2345/',
-                    method: 'GET'
-                }).done((message) => {
-                    setTimeout(() => {
-                        button.html('Request')
-                            .attr('disabled', false)
-                            .removeClass('disabled');
-                        banner.html('')
-                            .css('display', 'none')
-                            .removeClass('green')
-                            .removeClass('red');
-                    }, 3000);
-
-                    if (message.code === 1) {
-                        banner.html('Success! The request returned a good status code.')
-                            .css('display', 'inherit')
-                            .addClass('green');
-                    } else {
-                        banner.html('The request returned a bad status code. Please check the integrity of the web server.')
-                            .css('display', 'inherit')
-                            .addClass('red');
-                    }
-                }).fail(() => {
-                    setTimeout(() => {
-                        button.html('Request')
-                            .attr('disabled', false)
-                            .removeClass('disabled');
-                        banner.html('')
-                            .css('display', 'none')
-                            .removeClass('red');
-                    }, 3000);
-
-                    banner.html('Could not send request, try again later.')
-                        .css('display', 'inherit')
-                        .addClass('red');
-                });
-            }, 1000);
-        }
-    </script>
+    <script src="../_assets/scripts/index.js"></script>
 </html>

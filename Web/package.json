@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "node-fetch": "^2.5.0"
+    "mongoose": "^5.5.7",
+    "node-fetch": "^2.5.0",
+    "randomstring": "^1.1.5"
   }
 }

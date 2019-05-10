@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-* {font-family: 'Montserrat', sans-serif;}
+* {
+    font-family: Segoe UI, Arial, sans-serif;
+}
 body {
     margin: 0;
     padding: 0;
@@ -8,27 +10,31 @@ body {
 }
 .title {
     font-size: 25px;
-    font-weight: bolder;
-    text-align: center;
-    margin-top: 250px;
-    line-height: 30px;
 }
 .subtitle {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 100;
+    margin-bottom: 20px;
+}
+.container {
+    background-color: #f6f8fa;
+    border-radius: 7px;
+    padding: 20px;
+    width: 500px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
     text-align: center;
-    color: #b5b5b5;
-    line-height: 20px;
 }
 .button {
     border: 1px solid #0080ff;
     background-color: #0080ff;
     color: #ffffff;
     padding: 8px 12px;
-    text-align: center;
     cursor: pointer;
-    margin-top: 15px;
     border-radius: 20px;
+    margin-top: 30px;
 }
 .button.disabled {
     border: 1px solid #888888;
@@ -38,17 +44,13 @@ body {
 .button:focus {
     outline: none;
 }
-.banner {
-    display: none;
-    margin-bottom: -41px;
-    color: #ffffff;
-    padding: 10px 15px;
-}
-.banner.green {
-    background-color: #0b9e32;
-    border: 1px solid #0b9e32;
-}
-.banner.red {
-    background-color: #cc1c1c !important;
-    border: 1px solid #cc1c1c;
+.value {
+    font-size: 50px;
+    font-weight: 100;
+    line-height: 55px;
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: auto;
+    margin-right: auto;
 }
