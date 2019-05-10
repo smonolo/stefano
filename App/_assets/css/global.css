@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 * {font-family: 'Montserrat', sans-serif;}
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+}
 .title {
     font-size: 25px;
     font-weight: bolder;
@@ -30,16 +35,20 @@
     background-color: #888888;
     cursor: context-menu;
 }
-.button.success {
-    border: 1px solid #0b9e32;
-    background-color: #0b9e32;
-    cursor: context-menu;
-}
-.button.error {
-    border: 1px solid #ed1515;
-    background-color: #ed1515;
-    cursor: context-menu;
-}
 .button:focus {
     outline: none;
+}
+.banner {
+    display: none;
+    margin-bottom: -41px;
+    color: #ffffff;
+    padding: 10px 15px;
+}
+.banner.green {
+    background-color: #0b9e32;
+    border: 1px solid #0b9e32;
+}
+.banner.red {
+    background-color: #cc1c1c !important;
+    border: 1px solid #cc1c1c;
 }
