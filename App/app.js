@@ -2,7 +2,7 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 
 let win;
 
-function window(production) {
+async function window(production) {
     win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -12,7 +12,13 @@ function window(production) {
     win.setTitle('Launching' + (production ? '...' : ' in development mode...'));
     win.setMenu(null);
 
-    win.loadFile(`${__dirname}/_templates/index.html`);
+    if (!production) win.webContents.openDevTools();
+
+    try {
+        await win.loadFile(`${__dirname}/_templates/index.html`);
+    } catch (err) {
+        return win = null;
+    }
 
     win.on('closed', () => {
         win = null;
@@ -22,6 +28,9 @@ function window(production) {
 app.on('ready', () => {
     globalShortcut.register('CommandOrControl+R', () => {
         win.reload();
+    });
+    globalShortcut.register('CommandOrControl+W', () => {
+        win.toggleDevTools();
     });
 
     let isProduction = true;
