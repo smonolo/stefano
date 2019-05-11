@@ -16,19 +16,23 @@ body {
     font-weight: 100;
     margin-bottom: 20px;
 }
+.lead-container {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 .container {
     background-color: #f6f8fa;
     border-radius: 7px;
+    border: none;
     padding: 20px;
-    width: 500px;
     height: fit-content;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 100px;
     text-align: center;
 }
 .button {
-    border: 1px solid #0080ff;
+    border: none #0080ff;
     background-color: #0080ff;
     color: #ffffff;
     padding: 8px 12px;
@@ -36,8 +40,13 @@ body {
     border-radius: 20px;
     margin-top: 30px;
 }
+.button.green {
+    margin-top: 10px;
+    background-color: #09bf24;
+    border: none #09bf24;
+}
 .button.disabled {
-    border: 1px solid #888888;
+    border: none #888888;
     background-color: #888888;
     cursor: context-menu;
 }
@@ -55,12 +64,18 @@ body {
     margin-right: auto;
 }
 .banner {
-    background-color: #e20f0f;
     color: #ffffff;
     margin: 50px auto -90px auto;
-    width: 500px;
     padding: 10px 20px;
     border-radius: 4px;
     font-weight: 400;
     display: none;
+}
+.banner.red {
+    background-color: rgba(226, 15, 15, .7);
+    border: none rgba(226, 15, 15, .7);
+}
+.banner.green {
+    background-color: rgba(9, 191, 36, .8);
+    border: none rgba(9, 191, 36, .8);
 }

@@ -14,7 +14,14 @@ try {
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.get('/random-number', (req, res) => {
+app.get('/status', (req, res) => {
+    res.send({
+        status_code: 1,
+        status_message: 'working'
+    });
+});
+
+app.get('/random', (req, res) => {
     res.send({
         number: Math.floor(Math.random() * Math.floor(100)),
         string: randomstring.generate(10)

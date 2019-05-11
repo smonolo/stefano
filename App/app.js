@@ -4,8 +4,8 @@ let win;
 
 async function window(production) {
     win = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 1500,
+        height: 1000,
         icon: `${__dirname}/_assets/images/icon.png`
     });
 
