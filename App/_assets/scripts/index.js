@@ -20,9 +20,7 @@ function randomNumber() {
             }, 500);
         }).fail(() => {
             setTimeout(() => {
-                setTimeout(() => {
-                    banner.fadeOut('slow');
-                }, 3000);
+                setTimeout(() => banner.fadeOut('slow'), 3000);
 
                 button.html('Generate').toggleClass('disabled').attr('disabled', false);
             }, 500);
@@ -33,9 +31,7 @@ function randomNumber() {
         console.log('Could not establish connection to API server.');
 
         setTimeout(() => {
-            setTimeout(() => {
-                banner.fadeOut('slow');
-            }, 3000);
+            setTimeout(() => banner.fadeOut('slow'), 3000);
 
             button.html('Generate').toggleClass('disabled').attr('disabled', false);
         }, 500);
@@ -61,11 +57,8 @@ function checkAPI() {
         }).done((data) => {
             setTimeout(() => {
                 setTimeout(() => {
-                    if (data.status_code === 1) {
-                        successBanner.fadeOut('slow');
-                    } else {
-                        errorBanner.fadeOut('slow');
-                    }
+                    if (data.status_code === 1) successBanner.fadeOut('slow');
+                    else errorBanner.fadeOut('slow');
                 }, 3000);
 
                 button.html('Check API status').toggleClass('disabled').attr('disabled', false);
@@ -78,9 +71,7 @@ function checkAPI() {
             }
         }).fail(() => {
             setTimeout(() => {
-                setTimeout(() => {
-                    errorBanner.fadeOut('slow');
-                }, 3000);
+                setTimeout(() => errorBanner.fadeOut('slow'), 3000);
 
                 button.html('Check API status').toggleClass('disabled').attr('disabled', false);
             }, 500);
@@ -89,9 +80,7 @@ function checkAPI() {
         });
     } catch (err) {
         setTimeout(() => {
-            setTimeout(() => {
-                errorBanner.fadeOut('slow');
-            }, 3000);
+            setTimeout(() => errorBanner.fadeOut('slow'), 3000);
 
             button.html('Check API status').toggleClass('disabled').attr('disabled', false);
         }, 500);
