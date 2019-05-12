@@ -40,6 +40,10 @@ body {
     border-radius: 20px;
     margin-top: 30px;
 }
+.button.red {
+    background-color: rgb(226, 15, 15);
+    border: none rgb(226, 15, 15);
+}
 .button.green {
     margin-top: 10px;
     background-color: #09bf24;

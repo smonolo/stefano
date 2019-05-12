@@ -30,6 +30,8 @@ function randomNumber() {
             banner.html('Whoops! There was an error. Try again in some minutes.').fadeIn('slow');
         });
     } catch (err) {
+        console.log('Could not establish connection to API server.');
+
         setTimeout(() => {
             setTimeout(() => {
                 banner.fadeOut('slow');
@@ -96,4 +98,17 @@ function checkAPI() {
 
         errorBanner.html('Whoops! API failed to respond. Try again in some minutes.').fadeIn('slow');
     }
+}
+
+function resetValues() {
+    const button = $('#resetButton');
+    const number = $('#number');
+    const string = $('#string');
+
+    button.html('Resetting').toggleClass('disabled').attr('disabled', true);
+
+    setTimeout(() => button.html('Reset').toggleClass('disabled').attr('disabled', false), 500);
+
+    number.html('0');
+    string.html('AaBbCcDdEe');
 }
