@@ -32,6 +32,7 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Stefano"
-    }
+    },
+    "artifactName": "Stefano.exe"
   }
 }
