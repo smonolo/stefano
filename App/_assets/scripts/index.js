@@ -1,8 +1,8 @@
-function randomNumber() {
+function generateValues() {
     const number = $('#number');
     const string = $('#string');
     const banner = $('#errorBanner');
-    const button = $('#button');
+    const button = $('#valuesButton');
 
     try {
         banner.hide();
@@ -10,7 +10,7 @@ function randomNumber() {
         button.html('Generating').toggleClass('disabled').attr('disabled', true);
 
         $.ajax({
-            url: 'http://localhost:2345/random',
+            url: 'http://stevyb0t.it/api/random',
             method: 'GET'
         }).done((data) => {
             setTimeout(() => {
@@ -52,7 +52,7 @@ function checkAPI() {
         button.html('Checking API status').toggleClass('disabled').attr('disabled', true);
 
         $.ajax({
-            url: 'http://localhost:2345/status',
+            url: 'http://stevyb0t.it/api/status',
             method: 'GET'
         }).done((data) => {
             setTimeout(() => {
