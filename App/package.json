@@ -31,7 +31,8 @@
       "uninstallDisplayName": "Stefano",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Stefano"
+      "shortcutName": "Stefano",
+      "oneClick": false
     }
   }
 }
