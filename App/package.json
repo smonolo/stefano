@@ -31,15 +31,11 @@
       "uninstallDisplayName": "Stefano",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-<<<<<<< HEAD
-      "shortcutName": "Stefano"
+      "shortcutName": "Stefano",
+      "oneClick": false
     },
     "artifactName": "StefanoSetup.exe",
     "compression": "store"
-=======
-      "shortcutName": "Stefano",
-      "oneClick": false
     }
->>>>>>> 6648d5b95a71138628cff5e9fe22c126144e6d62
   }
 }
