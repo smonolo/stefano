@@ -9,7 +9,7 @@ async function window(production) {
         icon: `${__dirname}/_assets/images/icon.png`
     });
 
-    win.setTitle('Launching' + (production ? '...' : ' in development mode...'));
+    win.setTitle('Starting' + (production ? '...' : ' in development mode...'));
     win.setMenu(null);
 
     if (!production) win.webContents.openDevTools();

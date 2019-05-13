@@ -33,6 +33,7 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Stefano"
     },
-    "artifactName": "Stefano.exe"
+    "artifactName": "StefanoSetup.exe",
+    "compression": "store"
   }
 }
