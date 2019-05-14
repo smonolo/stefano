@@ -7,28 +7,42 @@ body {
     margin: 0;
     padding: 0;
     font-size: 15px;
+    background-color: #202124;
+}
+.container {
+    background-color: #191919;
+    border-radius: 7px;
+    border: none;
+    padding: 20px;
+    height: fit-content;
+    margin-top: 200px;
+    text-align: center;
 }
 .title {
     font-size: 25px;
+    color: #e5e5e5;
 }
 .subtitle {
     font-size: 16px;
     font-weight: 100;
     margin-bottom: 20px;
+    color: #c5c5c5;
+}
+.value {
+    font-size: 50px;
+    font-weight: 100;
+    line-height: 55px;
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #d5d5d5;
 }
 .lead-container {
     width: 500px;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
-}
-.container {
-    background-color: #f6f8fa;
-    border-radius: 7px;
-    border: none;
-    padding: 20px;
-    height: fit-content;
-    margin-top: 100px;
     text-align: center;
 }
 .button {
@@ -37,7 +51,7 @@ body {
     color: #ffffff;
     padding: 8px 12px;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-top: 30px;
 }
 .button.red {
@@ -57,19 +71,9 @@ body {
 .button:focus {
     outline: none;
 }
-.value {
-    font-size: 50px;
-    font-weight: 100;
-    line-height: 55px;
-    width: fit-content;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-left: auto;
-    margin-right: auto;
-}
 .banner {
     color: #ffffff;
-    margin: 50px auto -90px auto;
+    margin: 150px auto -190px auto;
     padding: 10px 20px;
     border-radius: 4px;
     font-weight: 400;

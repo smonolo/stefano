@@ -4,12 +4,14 @@ let win;
 
 async function window(production) {
     win = new BrowserWindow({
-        width: 1500,
-        height: 1000,
-        icon: `${__dirname}/_assets/images/icon.png`
+        width: 1400,
+        height: 900,
+        minWidth: 1100,
+        minHeight: 800,
+        icon: `${__dirname}/_assets/images/icon.png`,
+        show: false
     });
 
-    win.setTitle('Starting' + (production ? '...' : ' in development mode...'));
     win.setMenu(null);
 
     if (!production) win.webContents.openDevTools();
@@ -20,24 +22,34 @@ async function window(production) {
         return win = null;
     }
 
+    win.once('ready-to-show', () => {
+        win.show();
+    });
+
     win.on('closed', () => {
         win = null;
     });
 }
 
 app.on('ready', () => {
-    globalShortcut.register('CommandOrControl+R', () => {
-        win.reload();
-    });
-    globalShortcut.register('CommandOrControl+W', () => {
-        win.toggleDevTools();
-    });
-
     let isProduction = true;
 
     process.argv.forEach((val) => {
         if (val === '--dev') isProduction = false;
     });
+
+    globalShortcut.register('CommandOrControl+R', () => {
+        win.reload();
+    });
+    globalShortcut.register('CommandOrControl+Shift+F', () => {
+        win.setFullScreen(!win.isFullScreen());
+    });
+
+    if (!isProduction) {
+        globalShortcut.register('CommandOrControl+Shift+I', () => {
+            win.toggleDevTools();
+        });
+    }
 
     window(isProduction);
 });
