@@ -29,7 +29,7 @@
       "uninstallerIcon": "_assets/images/icon.ico",
       "installerHeaderIcon": "_assets/images/icon.ico",
       "uninstallDisplayName": "Stefano",
-      "createDesktopShortcut": true,
+      "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
       "shortcutName": "Stefano",
       "oneClick": false
