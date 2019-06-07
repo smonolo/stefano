@@ -1,4 +1,6 @@
 const {app, BrowserWindow, globalShortcut} = require('electron');
+const url = require('url');
+const path = require('path');
 
 let win;
 
@@ -17,7 +19,11 @@ async function window(production) {
     if (!production) win.webContents.openDevTools();
 
     try {
-        await win.loadFile(`${__dirname}/_templates/index.html`);
+        await win.loadURL(url.format({
+            pathname: path.join(__dirname, '_templates', 'index.html'),
+            protocol: 'file:',
+            slashes: true
+        }));
     } catch (err) {
         return win = null;
     }
