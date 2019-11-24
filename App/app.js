@@ -1,35 +1,34 @@
 const {app, BrowserWindow, globalShortcut} = require('electron');
-const url = require('url');
-const path = require('path');
 
 let win;
 
-async function window(production) {
+function window(production) {
     win = new BrowserWindow({
-        width: 1400,
-        height: 900,
-        minWidth: 1100,
-        minHeight: 800,
+        width: 1500,
+        height: 1000,
+        minWidth: 800,
+        minHeight: 500,
         icon: `${__dirname}/_assets/images/icon.png`,
-        show: false
+        show: false,
+        title: 'Stefano'
     });
 
     win.setMenu(null);
 
     if (!production) win.webContents.openDevTools();
 
-    try {
-        await win.loadURL(url.format({
-            pathname: path.join(__dirname, '_templates', 'index.html'),
-            protocol: 'file:',
-            slashes: true
-        }));
-    } catch (err) {
-        return win = null;
-    }
+    win.loadURL('https://stevyb0t.it').then();
 
     win.once('ready-to-show', () => {
         win.show();
+    });
+
+    win.on('page-title-updated', (event) => {
+        event.preventDefault();
+    });
+
+    win.webContents.on('new-window', (event) => {
+        event.preventDefault();
     });
 
     win.on('closed', () => {

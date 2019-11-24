@@ -1,9 +1,9 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "app.js",
-  "author": "stevyb0t",
+  "author": "stevyb0t.it",
   "scripts": {
     "start": "electron .",
     "start-dev": "electron . --dev",
@@ -17,7 +17,7 @@
   "build": {
     "appId": "it.stevyb0t.stefano",
     "productName": "Stefano",
-    "copyright": "Copyright © 2019 stevyb0t",
+    "copyright": "Copyright © 2019 stevyb0t.it",
     "directories": {
       "output": "production"
     },
@@ -32,9 +32,10 @@
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
       "shortcutName": "Stefano",
-      "oneClick": false
+      "oneClick": false,
+      "perMachine": true
     },
-    "artifactName": "StefanoSetup.exe",
+    "artifactName": "Stefano Setup.exe",
     "compression": "store"
   }
 }
