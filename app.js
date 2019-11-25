@@ -17,7 +17,9 @@ function window(production) {
 
     if (!production) win.webContents.openDevTools();
 
-    win.loadURL('https://stevyb0t.it').then();
+    let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
+
+    win.loadURL(loadUrl).then();
 
     win.once('ready-to-show', () => {
         win.show();
@@ -46,6 +48,7 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+R', () => {
         win.reload();
     });
+
     globalShortcut.register('CommandOrControl+Shift+F', () => {
         win.setFullScreen(!win.isFullScreen());
     });
