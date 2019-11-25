@@ -1,7 +1,7 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
@@ -22,12 +22,12 @@
       "output": "production"
     },
     "win": {
-      "icon": "_assets/images/icon.ico"
+      "icon": "images/icon.ico"
     },
     "nsis": {
-      "installerIcon": "_assets/images/icon.ico",
-      "uninstallerIcon": "_assets/images/icon.ico",
-      "installerHeaderIcon": "_assets/images/icon.ico",
+      "installerIcon": "images/icon.ico",
+      "uninstallerIcon": "images/icon.ico",
+      "installerHeaderIcon": "images/icon.ico",
       "uninstallDisplayName": "Stefano",
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,

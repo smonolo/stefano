@@ -8,7 +8,7 @@ function window(production) {
         height: 1000,
         minWidth: 800,
         minHeight: 500,
-        icon: `${__dirname}/_assets/images/icon.png`,
+        icon: `${__dirname}/images/icon.png`,
         show: false,
         title: 'Stefano'
     });
