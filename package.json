@@ -19,7 +19,7 @@
     "productName": "Stefano",
     "copyright": "Copyright © 2019 stevyb0t.it",
     "directories": {
-      "output": "production"
+      "output": "prod"
     },
     "win": {
       "icon": "images/icon.ico"
