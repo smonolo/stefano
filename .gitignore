@@ -3,4 +3,4 @@ node_modules/
 .iml
 target
 package-lock.json
-production
+prod

@@ -8,11 +8,15 @@
     "start": "electron .",
     "start-dev": "electron . --dev",
     "build-pack": "electron-builder --dir",
-    "build-dist": "electron-builder"
+    "build-dist": "electron-builder && electron-builder install-app-deps"
   },
   "devDependencies": {
     "electron": "^5.0.0",
     "electron-builder": "^20.39.0"
+  },
+  "dependencies": {
+    "electron-log": "^4.0.0",
+    "electron-store": "^5.1.0"
   },
   "build": {
     "appId": "it.stevyb0t.stefano",

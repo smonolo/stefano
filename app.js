@@ -1,12 +1,24 @@
 const {app, BrowserWindow, globalShortcut} = require('electron');
+const Store = require('electron-store');
+const log = require('electron-log');
+
+const store = new Store();
 
 let win;
 
 function window(production) {
+    log.info(`Starting electron in ${production ? 'production' : 'development'} mode.`);
+    log.debug(`Debug info:\nUsing electron ${process.versions.electron}.` +
+        `\nApp is running on version ${app.getVersion()}.`);
+
+    // Get latest size from config.json
+    let configWidth = store.get('width');
+    let configHeight = store.get('height');
+
     // Window default settings
     win = new BrowserWindow({
-        width: 1500,
-        height: 1000,
+        width: configWidth ? configWidth : 1500,
+        height: configHeight ? configHeight : 1000,
         minWidth: 800,
         minHeight: 500,
         icon: `${__dirname}/images/icon.png`,
@@ -39,17 +51,29 @@ function window(production) {
         event.preventDefault();
     });
 
+    let currentSize = win.getSize();
+
+    win.on('resize', () => {
+        // Get window size on resize event
+        currentSize = win.getSize();
+    });
+
     win.on('closed', () => {
+        // Store current width and height for next boot
+        store.set('width', currentSize[0]);
+        store.set('height', currentSize[1]);
+
+        log.info(`Changed config size to ${currentSize[0]}, ${currentSize[1]}.`);
+        log.info('Shutting down.');
+
+        // Set window to null, so close it completely
         win = null;
     });
 }
 
 app.on('ready', () => {
-    let isProduction = true;
-
-    process.argv.forEach((val) => {
-        if (val === '--dev') isProduction = false;
-    });
+    // Check if app is running in development mode
+    let isProduction = (process.argv || []).indexOf('--dev') === -1;
 
     // Register shortcut to reload the main window
     globalShortcut.register('CommandOrControl+R', () => {
@@ -75,15 +99,10 @@ app.on('ready', () => {
 
 // Quit app process once all windows are closed
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+    if (process.platform !== 'darwin') app.quit();
 });
 
-// Call window function on activation if there
-// is no active window
+// Call window function on activation if there is no active window
 app.on('activate', () => {
-    if (win === null) {
-        window();
-    }
+    if (win === null) window();
 });
