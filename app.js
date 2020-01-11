@@ -19,8 +19,8 @@ function window(production) {
     win = new BrowserWindow({
         width: configWidth ? configWidth : 1500,
         height: configHeight ? configHeight : 1000,
-        minWidth: 800,
-        minHeight: 500,
+        minWidth: 600,
+        minHeight: 300,
         icon: `${__dirname}/images/icon.png`,
         show: false,
         title: 'Stefano'
