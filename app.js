@@ -33,6 +33,11 @@ function window(production) {
     // is in running in development mode
     if (!production) win.webContents.openDevTools();
 
+    // Clear session cache
+    win.webContents.session.clearCache(() => {});
+
+    log.info('Reloading and clearing session cache.');
+
     let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
     win.loadURL(loadUrl).then();
