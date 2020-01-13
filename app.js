@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut} = require('electron');
+const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
 
@@ -6,7 +6,9 @@ const store = new Store();
 
 let win;
 
-function window(production) {
+async function window(production) {
+    let timeUsedStart = new Date().getTime();
+
     log.info(`Starting electron in ${production ? 'production' : 'development'} mode.`);
     log.debug(`Debug info:\nUsing electron ${process.versions.electron}.` +
         `\nApp is running on version ${app.getVersion()}.`);
@@ -14,6 +16,10 @@ function window(production) {
     // Get latest size from config.json
     let configWidth = store.get('width');
     let configHeight = store.get('height');
+
+    if (!store.get('timeUsed')) {
+        store.set('timeUsed', 0);
+    }
 
     // Window default settings
     win = new BrowserWindow({
@@ -33,14 +39,14 @@ function window(production) {
     // is in running in development mode
     if (!production) win.webContents.openDevTools();
 
-    // Clear session cache
-    win.webContents.session.clearCache(() => {});
-
     log.info('Reloading and clearing session cache.');
 
     let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
-    win.loadURL(loadUrl).then();
+    // Clear session cache and load url
+    await win.webContents.session.clearCache(() => {
+        win.loadURL(loadUrl).then();
+    });
 
     win.once('ready-to-show', () => {
         win.show();
@@ -64,10 +70,15 @@ function window(production) {
     });
 
     win.on('closed', () => {
+        // Get total time in milliseconds
+        let timeUsedFinal = new Date().getTime() - timeUsedStart;
+
         // Store current width and height for next boot
         store.set('width', currentSize[0]);
         store.set('height', currentSize[1]);
+        store.set('timeUsed', store.get('timeUsed') + timeUsedFinal);
 
+        log.debug(`App was used for ${timeUsedFinal} milliseconds.`);
         log.info(`Changed config size to ${currentSize[0]}, ${currentSize[1]}.`);
         log.info('Shutting down.');
 
@@ -75,6 +86,8 @@ function window(production) {
         win = null;
     });
 }
+
+let tray = null;
 
 app.on('ready', () => {
     // Check if app is running in development mode
@@ -98,8 +111,22 @@ app.on('ready', () => {
         });
     }
 
+    // Define tray properties
+    tray = new Tray(`${__dirname}/images/icon.png`);
+
+    let trayMenu = Menu.buildFromTemplate([
+        {label: 'Toggle Developer Tools', type: 'normal', click() {win.toggleDevTools()}},
+        {type: 'separator'},
+        {label: 'Reload', type: 'normal', click() {win.reload()}},
+        {label: 'Quit', type: 'normal', click() {app.quit()}}
+    ]);
+
+    // Set tray properties
+    tray.setToolTip('Stefano');
+    tray.setContextMenu(trayMenu);
+
     // Open window with dev mode boolean
-    window(isProduction);
+    window(isProduction).then();
 });
 
 // Quit app process once all windows are closed
