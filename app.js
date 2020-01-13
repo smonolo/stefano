@@ -30,7 +30,7 @@ async function window(production) {
         minHeight: 300,
         icon: `${__dirname}/images/icon.png`,
         show: false,
-        title: 'Stefano' + production ? '' : ' (DEV)'
+        title: 'Stefano' + (production ? '' : ' (DEV)')
     });
 
     // Remove default menu
