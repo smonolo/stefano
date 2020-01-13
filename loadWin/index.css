@@ -24,13 +24,23 @@
 }
 
 * {
-    font: 30px 'Fieldwork', sans-serif;
+    font-family: 'Fieldwork', sans-serif;
     font-weight: 800;
 }
 html {
     background-image: linear-gradient(to right, #101e2b, #0b121a, #090b12, #000000);
-    color: #ffffff;
+}
+.Container {
     text-align: center;
-    line-height: normal;
-    margin-top: 125px;
+}
+.Image {
+    margin-top: 85px;
+    width: 65px;
+    border-radius: 2px;
+}
+.Title {
+    margin-top: 17px;
+    color: #ffffff;
+    user-select: none;
+    font-size: 22px;
 }

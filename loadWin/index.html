@@ -6,6 +6,16 @@
         <title>Loading...</title>
     </head>
     <body>
-        <div>Loading...</div>
+        <div class="Container">
+            <img class="Image" src="../images/logo.png" alt="Stefano" draggable="false">
+            <div class="Title">Loading<span id="dots"></span></div>
+        </div>
+        <script type="text/javascript">
+            let span = document.getElementById('dots');
+
+            setInterval(() => {
+                if ((span.innerHTML += '.').length === 4) span.innerHTML = '';
+            }, 350);
+        </script>
     </body>
 </html>

@@ -6,11 +6,9 @@ const richPresence = require('discord-rich-presence')('648198569903390724');
 const store = new Store();
 
 let window, win, loadWin;
-
 let tray = null;
 
 app.on('ready', () => {
-    // Create loading window
     loadWin = new BrowserWindow({
         width: 300,
         height: 300,
@@ -21,42 +19,30 @@ app.on('ready', () => {
         show: false
     });
 
-    // Remove loading window menu
-    loadWin.setMenu(null);
+    let timeUsedStart = new Date().getTime();
+    let isProduction = (process.argv || []).indexOf('--dev') === -1;
 
-    // Load loading window url
+    log.info(`Starting electron in ${isProduction ? 'production' : 'development'} mode.`);
+    log.debug(`Debug info:\nUsing electron ${process.versions.electron}.` +
+        `\nApp is running on version ${app.getVersion()}.`);
+
+    if (!store.get('timeUsed')) store.set('timeUsed', 0);
+    if (!store.get('logins')) store.set('logins', 0);
+
+    loadWin.setMenu(null);
     loadWin.loadFile(`${__dirname}/loadWin/index.html`).then();
 
     // Load once html is loaded
-    loadWin.webContents.on('did-finish-load', () => {
-        loadWin.show();
-    });
+    loadWin.webContents.on('did-finish-load', () => loadWin.show());
 
-    // Check if app is running in development mode
-    let isProduction = (process.argv || []).indexOf('--dev') === -1;
+    globalShortcut.register('CommandOrControl+R', () => win.reload());
+    globalShortcut.register('CommandOrControl+Shift+F', () => win.setFullScreen(!win.isFullScreen()));
 
-    // Register shortcut to reload the main window
-    globalShortcut.register('CommandOrControl+R', () => {
-        win.reload();
-    });
+    if (!isProduction) globalShortcut.register('CommandOrControl+Shift+I', () => win.toggleDevTools());
 
-    // Register shortcut to set fullscreen
-    globalShortcut.register('CommandOrControl+Shift+F', () => {
-        win.setFullScreen(!win.isFullScreen());
-    });
-
-    // Register shortcut to toggle dev tools if
-    // the app is running in development mode
-    if (!isProduction) {
-        globalShortcut.register('CommandOrControl+Shift+I', () => {
-            win.toggleDevTools();
-        });
-    }
-
-    // Define tray properties
+    // Create new tray
     tray = new Tray(`${__dirname}/images/icon.png`);
 
-    // Create tray icon menu
     let trayMenu = Menu.buildFromTemplate([
         {label: 'Toggle Developer Tools', type: 'normal', click() {win.toggleDevTools()}},
         {type: 'separator'},
@@ -64,27 +50,13 @@ app.on('ready', () => {
         {label: 'Quit', type: 'normal', click() {app.quit()}}
     ]);
 
-    // Set tray properties
     tray.setToolTip('Stefano');
     tray.setContextMenu(trayMenu);
 
-    // Open window with dev mode boolean
     window = async function window(production) {
-        let timeUsedStart = new Date().getTime();
-
-        log.info(`Starting electron in ${production ? 'production' : 'development'} mode.`);
-        log.debug(`Debug info:\nUsing electron ${process.versions.electron}.` +
-            `\nApp is running on version ${app.getVersion()}.`);
-
-        // Get latest size from config.json
         let configWidth = store.get('width');
         let configHeight = store.get('height');
 
-        if (!store.get('timeUsed')) {
-            store.set('timeUsed', 0);
-        }
-
-        // Window default settings
         win = new BrowserWindow({
             width: configWidth ? configWidth : 1500,
             height: configHeight ? configHeight : 1000,
@@ -95,11 +67,9 @@ app.on('ready', () => {
             title: 'Stefano' + (production ? '' : ' (DEV)')
         });
 
-        // Remove default menu
         win.setMenu(null);
 
-        // Automatically open dev tools if app
-        // is in running in development mode
+        // Open dev tools if running in dev mode
         if (!production) win.webContents.openDevTools();
 
         log.info('Reloading and clearing session cache.');
@@ -107,9 +77,7 @@ app.on('ready', () => {
         let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
         // Clear session cache and load url
-        await win.webContents.session.clearCache(() => {
-            win.loadURL(loadUrl).then();
-        });
+        await win.webContents.session.clearCache(() => win.loadURL(loadUrl).then());
 
         // Discord rich presence
         richPresence.updatePresence({
@@ -119,41 +87,33 @@ app.on('ready', () => {
             instance: true
         });
 
-        // Show window once ready
         win.once('ready-to-show', () => {
-            // Close loading window
             loadWin.hide();
             loadWin.close();
-
-            // Show main window
             win.show();
         });
 
         // Don't update page title
-        win.on('page-title-updated', (event) => {
-            event.preventDefault();
-        });
+        win.on('page-title-updated', (event) => event.preventDefault());
 
         // Don't open new windows
-        win.webContents.on('new-window', (event) => {
-            event.preventDefault();
-        });
+        win.webContents.on('new-window', (event) => event.preventDefault());
 
         let currentSize = win.getSize();
 
-        win.on('resize', () => {
-            // Get window size on resize event
-            currentSize = win.getSize();
-        });
+        // Get window size on resize event
+        win.on('resize', () => currentSize = win.getSize());
 
         win.on('closed', () => {
-            // Get total time in milliseconds
             let timeUsedFinal = new Date().getTime() - timeUsedStart;
 
-            // Store current width and height for next boot
+            // Set configs before closing
             store.set('width', currentSize[0]);
             store.set('height', currentSize[1]);
             store.set('timeUsed', store.get('timeUsed') + timeUsedFinal);
+            store.set('logins', store.get('logins') + 1);
+            store.set('lastLogin', new Date().getTime());
+            if (!store.get('firstLogin')) store.set('firstLogin', new Date().getTime());
 
             log.debug(`App was used for ${timeUsedFinal} milliseconds.`);
             log.info(`Changed config size to ${currentSize[0]}, ${currentSize[1]}.`);
@@ -168,11 +128,7 @@ app.on('ready', () => {
 });
 
 // Quit app process once all windows are closed
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
-});
+app.on('window-all-closed', () => {if (process.platform !== 'darwin') app.quit()});
 
 // Call window function on activation if there is no active window
-app.on('activate', () => {
-    if (win === null) window();
-});
+app.on('activate', () => {if (win === null) window()});
