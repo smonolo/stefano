@@ -1,6 +1,7 @@
 const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
+const richPresence = require('discord-rich-presence')('648198569903390724');
 
 const store = new Store();
 
@@ -48,6 +49,15 @@ async function window(production) {
         win.loadURL(loadUrl).then();
     });
 
+    // Discord rich presence
+    richPresence.updatePresence({
+        state: 'Visiting stevyb0t.it',
+        startTimestamp: Date.now(),
+        largeImageKey: 'logo',
+        instance: true
+    });
+
+    // Show window once ready
     win.once('ready-to-show', () => {
         win.show();
     });
