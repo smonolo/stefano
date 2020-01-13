@@ -22,9 +22,9 @@ app.on('ready', () => {
     let timeUsedStart = new Date().getTime();
     let isProduction = (process.argv || []).indexOf('--dev') === -1;
 
-    log.info(`Starting electron in ${isProduction ? 'production' : 'development'} mode.`);
-    log.debug(`Debug info:\nUsing electron ${process.versions.electron}.` +
-        `\nApp is running on version ${app.getVersion()}.`);
+    log.info(`Starting app in ${isProduction ? 'production' : 'development'} mode.`);
+    log.debug(`\n---------------\nDebug info:\n- Electron version: ${process.versions.electron}.` +
+        `\n- App version: ${app.getVersion()}.\n---------------`);
 
     if (!store.get('timeUsed')) store.set('timeUsed', 0);
     if (!store.get('logins')) store.set('logins', 0);
@@ -54,12 +54,7 @@ app.on('ready', () => {
     tray.setContextMenu(trayMenu);
 
     window = async function window(production) {
-        let configWidth = store.get('width');
-        let configHeight = store.get('height');
-
         win = new BrowserWindow({
-            width: configWidth ? configWidth : 1500,
-            height: configHeight ? configHeight : 1000,
             minWidth: 600,
             minHeight: 300,
             icon: `${__dirname}/images/icon.png`,
@@ -67,12 +62,22 @@ app.on('ready', () => {
             title: 'Stefano' + (production ? '' : ' (DEV)')
         });
 
+        let configWidth = store.get('width');
+        let configHeight = store.get('height');
+        let configPosX = store.get('posX');
+        let configPosY = store.get('posY');
+        let currentPosFirst = win.getPosition();
+
+        win.setBounds({
+            width: configWidth ? configWidth : 1500,
+            height: configHeight ? configHeight : 1000,
+            x: configPosX ? configPosX : (currentPosFirst[0] - (configWidth ? 0 : 350)),
+            y: configPosY ? configPosY : (currentPosFirst[1] - (configHeight ? 0 : 200))
+        });
         win.setMenu(null);
 
         // Open dev tools if running in dev mode
         if (!production) win.webContents.openDevTools();
-
-        log.info('Reloading and clearing session cache.');
 
         let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
@@ -100,9 +105,10 @@ app.on('ready', () => {
         win.webContents.on('new-window', (event) => event.preventDefault());
 
         let currentSize = win.getSize();
+        let currentPos = win.getPosition();
 
-        // Get window size on resize event
         win.on('resize', () => currentSize = win.getSize());
+        win.on('move', () => currentPos = win.getPosition());
 
         win.on('closed', () => {
             let timeUsedFinal = new Date().getTime() - timeUsedStart;
@@ -110,16 +116,18 @@ app.on('ready', () => {
             // Set configs before closing
             store.set('width', currentSize[0]);
             store.set('height', currentSize[1]);
+            store.set('posX', currentPos[0]);
+            store.set('posY', currentPos[1]);
             store.set('timeUsed', store.get('timeUsed') + timeUsedFinal);
             store.set('logins', store.get('logins') + 1);
             store.set('lastLogin', new Date().getTime());
             if (!store.get('firstLogin')) store.set('firstLogin', new Date().getTime());
 
-            log.debug(`App was used for ${timeUsedFinal} milliseconds.`);
-            log.info(`Changed config size to ${currentSize[0]}, ${currentSize[1]}.`);
+            log.debug(`\n---------------\nDebug info:\n- Session usage time: ${timeUsedFinal} ms.` +
+                `\n- Saved latest size. (width: ${currentSize[0]}, height: ${currentSize[1]})` +
+                `\n- Saved latest position. (x: ${currentPos[0]}, y: ${currentPos[1]})\n---------------`);
             log.info('Shutting down.');
 
-            // Set window to null, so close it completely
             win = null;
         });
     };
