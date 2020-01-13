@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'Fieldwork';
+    src: url('../fonts/FieldworkBold.otf') format('opentype');
+    font-weight: 800;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Fieldwork';
+    src: url('../fonts/FieldworkMedium.otf') format('opentype');
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Fieldwork';
+    src: url('../fonts/FieldworkRegular.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Fieldwork';
+    src: url('../fonts/FieldworkLight.otf') format('opentype');
+    font-weight: 200;
+    font-display: swap;
+}
+
+* {
+    font: 30px 'Fieldwork', sans-serif;
+    font-weight: 800;
+}
+html {
+    background-image: linear-gradient(to right, #101e2b, #0b121a, #090b12, #000000);
+    color: #ffffff;
+    text-align: center;
+    line-height: normal;
+    margin-top: 125px;
+}
