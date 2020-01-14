@@ -9,31 +9,21 @@ const store = new Store();
 let window, win, loadWin;
 let tray = null;
 
-autoUpdater.on('checking-for-update', () => {
-    log.info('Checking for updates');
-});
-
-autoUpdater.on('update-available', () => {
-    log.info('Update available');
-});
-
-autoUpdater.on('update-not-available', () => {
-    log.info('Update not available');
-});
-
-autoUpdater.on('error', () => {
-    log.info('Could not check for updates');
-});
-
-autoUpdater.on('download-progress', () => {
-    log.info('Downloading update');
-});
-
-autoUpdater.on('update-downloaded', () => {
-    log.info('Update downloaded');
-});
+autoUpdater.on('checking-for-update', () => log.info('Checking for updates'));
+autoUpdater.on('update-available', () => log.info('Update available'));
+autoUpdater.on('update-not-available', () => log.info('Update not available'));
+autoUpdater.on('error', (error) => log.error('Could not check for updates: ' + error.stack));
+autoUpdater.on('download-progress', () => log.info('Downloading update'));
+autoUpdater.on('update-downloaded', () => log.info('Update downloaded'));
 
 app.on('ready', () => {
+    autoUpdater.setFeedURL({
+        provider: 'github',
+        repo: 'stefano',
+        owner: 'Stevyb0t',
+        private: true,
+        token: process.env.GH_TOKEN
+    });
     autoUpdater.checkForUpdatesAndNotify().then();
 
     loadWin = new BrowserWindow({
@@ -86,7 +76,7 @@ app.on('ready', () => {
             minHeight: 300,
             icon: `${__dirname}/images/icon.png`,
             show: false,
-            title: 'Stefano' + app.getVersion() + (production ? '' : ' (DEV)')
+            title: 'Stefano ' + app.getVersion() + (production ? '' : ' (DEV)')
         });
 
         let configWidth = store.get('width');
