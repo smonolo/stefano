@@ -1,7 +1,7 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
