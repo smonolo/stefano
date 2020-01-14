@@ -1,24 +1,14 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
     "start": "electron .",
     "start-dev": "electron . --dev",
     "build-pack": "electron-builder --dir",
-    "build-dist": "electron-builder && electron-builder install-app-deps && build --win -p always"
-  },
-  "devDependencies": {
-    "electron": "^5.0.0",
-    "electron-builder": "^20.39.0"
-  },
-  "dependencies": {
-    "discord-rich-presence": "0.0.8",
-    "electron-log": "^4.0.0",
-    "electron-store": "^5.1.0",
-    "electron-updater": "^4.2.0"
+    "build-dist": "build --win -p always"
   },
   "build": {
     "appId": "it.stevyb0t.stefano",
@@ -43,10 +33,22 @@
     },
     "artifactName": "StefanoSetup.exe",
     "compression": "store",
-    "publish":  [{
-      "provider": "github",
-      "owner": "Stevyb0t",
-      "repo": "stefano"
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Stevyb0t",
+        "repo": "stefano"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^7.1.9",
+    "electron-builder": "^22.2.0"
+  },
+  "dependencies": {
+    "discord-rich-presence": "0.0.8",
+    "electron-log": "^4.0.3",
+    "electron-store": "^5.1.0",
+    "electron-updater": "^4.2.0"
   }
 }
