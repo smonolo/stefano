@@ -2,13 +2,40 @@ const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
 const richPresence = require('discord-rich-presence')('648198569903390724');
+const {autoUpdater} = require('electron-updater');
 
 const store = new Store();
 
 let window, win, loadWin;
 let tray = null;
 
+autoUpdater.on('checking-for-update', () => {
+    log.info('Checking for updates');
+});
+
+autoUpdater.on('update-available', () => {
+    log.info('Update available');
+});
+
+autoUpdater.on('update-not-available', () => {
+    log.info('Update not available');
+});
+
+autoUpdater.on('error', () => {
+    log.info('Could not check for updates');
+});
+
+autoUpdater.on('download-progress', () => {
+    log.info('Downloading update');
+});
+
+autoUpdater.on('update-downloaded', () => {
+    log.info('Update downloaded');
+});
+
 app.on('ready', () => {
+    autoUpdater.checkForUpdatesAndNotify().then();
+
     loadWin = new BrowserWindow({
         width: 300,
         height: 300,
@@ -23,8 +50,8 @@ app.on('ready', () => {
     let isProduction = (process.argv || []).indexOf('--dev') === -1;
 
     log.info(`Starting app in ${isProduction ? 'production' : 'development'} mode.`);
-    log.debug(`\n---------------\nDebug info:\n- Electron version: ${process.versions.electron}.` +
-        `\n- App version: ${app.getVersion()}.\n---------------`);
+    log.debug(`\n---------------\nDebug info:\n- Electron version: ${process.versions.electron}` +
+        `\n- App version: ${app.getVersion()}\n---------------`);
 
     if (!store.get('timeUsed')) store.set('timeUsed', 0);
     if (!store.get('logins')) store.set('logins', 0);
@@ -59,7 +86,7 @@ app.on('ready', () => {
             minHeight: 300,
             icon: `${__dirname}/images/icon.png`,
             show: false,
-            title: 'Stefano' + (production ? '' : ' (DEV)')
+            title: 'Stefano' + app.getVersion() + (production ? '' : ' (DEV)')
         });
 
         let configWidth = store.get('width');
