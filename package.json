@@ -1,24 +1,24 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
     "start": "electron .",
     "start-dev": "electron . --dev",
     "build-pack": "electron-builder --dir",
-    "build-dist": "electron-builder && electron-builder install-app-deps"
+    "build-dist": "build --win -p always"
   },
   "devDependencies": {
-    "electron": "^7.1.9",
-    "electron-builder": "^22.2.0"
+    "electron": "^4.0.6",
+    "electron-builder": "^20.34.0"
   },
   "dependencies": {
     "discord-rich-presence": "0.0.8",
     "electron-log": "^4.0.3",
     "electron-store": "^5.1.0",
-    "electron-updater": "^4.2.0"
+    "electron-updater": "^4.0.0"
   },
   "build": {
     "appId": "it.stevyb0t.stefano",

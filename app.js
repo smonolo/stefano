@@ -47,7 +47,7 @@ app.on('ready', () => {
     if (!store.get('logins')) store.set('logins', 0);
 
     loadWin.setMenu(null);
-    loadWin.loadFile(`${__dirname}/loadWin/index.html`).then();
+    loadWin.loadFile(`${__dirname}/loadWin/index.html`);
 
     // Load once html is loaded
     loadWin.webContents.on('did-finish-load', () => loadWin.show());
@@ -99,7 +99,7 @@ app.on('ready', () => {
         let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
         // Clear session cache and load url
-        await win.webContents.session.clearCache(() => win.loadURL(loadUrl).then());
+        await win.webContents.session.clearCache(() => win.loadURL(loadUrl));
 
         // Discord rich presence
         richPresence.updatePresence({
@@ -140,7 +140,7 @@ app.on('ready', () => {
             store.set('lastLogin', new Date().getTime());
             if (!store.get('firstLogin')) store.set('firstLogin', new Date().getTime());
 
-            log.debug(`\n---------------\nDebug info:\n- Session usage time: ${timeUsedFinal} ms.` +
+            log.debug(`\n---------------\nDebug info:\n- Session duration: ${timeUsedFinal} ms.` +
                 `\n- Saved latest size. (width: ${currentSize[0]}, height: ${currentSize[1]})` +
                 `\n- Saved latest position. (x: ${currentPos[0]}, y: ${currentPos[1]})\n---------------`);
             log.info('Shutting down.');
