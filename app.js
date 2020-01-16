@@ -1,31 +1,14 @@
-const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
+const {app, BrowserWindow, globalShortcut, Tray, Menu, screen} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
 const richPresence = require('discord-rich-presence')('648198569903390724');
-const {autoUpdater} = require('electron-updater');
 
 const store = new Store();
 
 let window, win, loadWin;
 let tray = null;
 
-autoUpdater.on('checking-for-update', () => log.info('Checking for updates'));
-autoUpdater.on('update-available', () => log.info('Update available'));
-autoUpdater.on('update-not-available', () => log.info('Update not available'));
-autoUpdater.on('error', (error) => log.error('Could not check for updates: ' + error.stack));
-autoUpdater.on('download-progress', () => log.info('Downloading update'));
-autoUpdater.on('update-downloaded', () => log.info('Update downloaded'));
-
 app.on('ready', () => {
-    autoUpdater.setFeedURL({
-        provider: 'github',
-        repo: 'stefano',
-        owner: 'Stevyb0t',
-        private: true,
-        token: process.env.GH_TOKEN
-    });
-    autoUpdater.checkForUpdatesAndNotify().then();
-
     loadWin = new BrowserWindow({
         width: 300,
         height: 300,
@@ -33,7 +16,8 @@ app.on('ready', () => {
         icon: `${__dirname}/images/icon.png`,
         resizable: false,
         movable: true,
-        show: false
+        show: false,
+        autoHideMenuBar: true
     });
 
     let timeUsedStart = new Date().getTime();
@@ -46,22 +30,21 @@ app.on('ready', () => {
     if (!store.get('timeUsed')) store.set('timeUsed', 0);
     if (!store.get('logins')) store.set('logins', 0);
 
-    loadWin.setMenu(null);
-    loadWin.loadFile(`${__dirname}/loadWin/index.html`);
+    loadWin.loadFile(`${__dirname}/loadWin/index.html`).then();
 
     // Load once html is loaded
     loadWin.webContents.on('did-finish-load', () => loadWin.show());
 
+    // Register shortcuts
     globalShortcut.register('CommandOrControl+R', () => win.reload());
     globalShortcut.register('CommandOrControl+Shift+F', () => win.setFullScreen(!win.isFullScreen()));
-
     if (!isProduction) globalShortcut.register('CommandOrControl+Shift+I', () => win.toggleDevTools());
 
-    // Create new tray
+    // Create new tray icon
     tray = new Tray(`${__dirname}/images/icon.png`);
 
     let trayMenu = Menu.buildFromTemplate([
-        {label: 'Toggle Developer Tools', type: 'normal', click() {win.toggleDevTools()}},
+        {label: 'Developer Tools', type: 'normal', click() {win.toggleDevTools()}},
         {type: 'separator'},
         {label: 'Reload', type: 'normal', click() {win.reload()}},
         {label: 'Quit', type: 'normal', click() {app.quit()}}
@@ -70,13 +53,14 @@ app.on('ready', () => {
     tray.setToolTip('Stefano');
     tray.setContextMenu(trayMenu);
 
-    window = async function window(production) {
+    window = function window(production) {
         win = new BrowserWindow({
             minWidth: 600,
             minHeight: 300,
             icon: `${__dirname}/images/icon.png`,
             show: false,
-            title: 'Stefano ' + app.getVersion() + (production ? '' : ' (DEV)')
+            title: 'Stefano' + (production ? '' : ` (${app.getVersion()}-DEV)`),
+            autoHideMenuBar: true
         });
 
         let configWidth = store.get('width');
@@ -91,15 +75,16 @@ app.on('ready', () => {
             x: configPosX ? configPosX : (currentPosFirst[0] - (configWidth ? 0 : 350)),
             y: configPosY ? configPosY : (currentPosFirst[1] - (configHeight ? 0 : 200))
         });
-        win.setMenu(null);
 
         // Open dev tools if running in dev mode
         if (!production) win.webContents.openDevTools();
 
+        // Clear session cache and load url
+        win.webContents.session.clearCache().then();
+
         let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
-        // Clear session cache and load url
-        await win.webContents.session.clearCache(() => win.loadURL(loadUrl));
+        win.loadURL(loadUrl).then();
 
         // Discord rich presence
         richPresence.updatePresence({
@@ -143,7 +128,7 @@ app.on('ready', () => {
             log.debug(`\n---------------\nDebug info:\n- Session duration: ${timeUsedFinal} ms.` +
                 `\n- Saved latest size. (width: ${currentSize[0]}, height: ${currentSize[1]})` +
                 `\n- Saved latest position. (x: ${currentPos[0]}, y: ${currentPos[1]})\n---------------`);
-            log.info('Shutting down.');
+            log.info('Closing all windows and shutting down.');
 
             win = null;
         });
