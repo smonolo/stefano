@@ -1,7 +1,8 @@
-const {app, BrowserWindow, globalShortcut, Tray, Menu, screen} = require('electron');
+const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
 const richPresence = require('discord-rich-presence')('648198569903390724');
+const open = require('open');
 
 const store = new Store();
 
@@ -79,8 +80,9 @@ app.on('ready', () => {
         // Open dev tools if running in dev mode
         if (!production) win.webContents.openDevTools();
 
-        // Clear session cache and load url
+        // Clear session cache and storage data
         win.webContents.session.clearCache().then();
+        win.webContents.session.clearStorageData().then();
 
         let loadUrl = production ? 'https://stevyb0t.it' : 'http://localhost:3000';
 
@@ -104,7 +106,11 @@ app.on('ready', () => {
         win.on('page-title-updated', (event) => event.preventDefault());
 
         // Don't open new windows
-        win.webContents.on('new-window', (event) => event.preventDefault());
+        win.webContents.on('new-window', async (event, url) => {
+            event.preventDefault();
+
+            if (url.includes('https://')) await open(url);
+        });
 
         let currentSize = win.getSize();
         let currentPos = win.getPosition();

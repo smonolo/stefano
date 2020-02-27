@@ -1,7 +1,7 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
@@ -17,7 +17,8 @@
   "dependencies": {
     "discord-rich-presence": "0.0.8",
     "electron-log": "^4.0.3",
-    "electron-store": "^5.1.0"
+    "electron-store": "^5.1.0",
+    "open": "^7.0.2"
   },
   "build": {
     "appId": "it.stevyb0t.stefano",
