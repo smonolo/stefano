@@ -34,10 +34,6 @@ app.on('ready', () => {
 
     loadWin.loadFile(`${__dirname}/loadWin/index.html`).then();
 
-    loadWin.once('ready-to-show', () => {
-        autoUpdater.checkForUpdatesAndNotify().then();
-    });
-
     // Load once html is loaded
     loadWin.webContents.on('did-finish-load', () => loadWin.show());
 
@@ -102,6 +98,8 @@ app.on('ready', () => {
         });
 
         win.once('ready-to-show', () => {
+            autoUpdater.checkForUpdates();
+
             loadWin.hide();
             loadWin.close();
             win.show();
@@ -155,16 +153,21 @@ app.on('window-all-closed', () => {if (process.platform !== 'darwin') app.quit()
 app.on('activate', () => {if (win === null) window()});
 
 autoUpdater.on('update-available', () => {
+    log.info('Update available. Downloading.');
+
     autoUpdater.downloadUpdate().then();
 });
 
-autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+autoUpdater.on('update-downloaded', () => {
+    log.info('Update downloaded. Asking user to restart the application.');
+
     let updaterDialog = {
         type: 'info',
         buttons: ['Restart', 'Later'],
-        title: 'Application Update',
-        message: process.platform === 'win32' ? releaseNotes : releaseName,
-        details: 'A new version has been downloaded. Restart the application to apply the updates.'
+        title: 'Update Downloaded',
+        icon: `${__dirname}/images/icon.png`,
+        message: 'Stefano',
+        detail: 'A new version has been downloaded. Restart the application to apply the changes.'
     };
 
     dialog.showMessageBox(updaterDialog).then((returnValue) => {
