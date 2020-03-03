@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut, Tray, Menu} = require('electron');
+const {app, BrowserWindow, globalShortcut, Tray, Menu, dialog} = require('electron');
 const Store = require('electron-store');
 const log = require('electron-log');
 const richPresence = require('discord-rich-presence')('648198569903390724');
@@ -155,9 +155,19 @@ app.on('window-all-closed', () => {if (process.platform !== 'darwin') app.quit()
 app.on('activate', () => {if (win === null) window()});
 
 autoUpdater.on('update-available', () => {
-    window.webContents.send('update_available');
+    autoUpdater.downloadUpdate().then();
 });
 
-autoUpdater.on('update-downloaded', () => {
-    window.webContents.send('update_downloaded');
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    let updaterDialog = {
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: 'Application Update',
+        message: process.platform === 'win32' ? releaseNotes : releaseName,
+        details: 'A new version has been downloaded. Restart the application to apply the updates.'
+    };
+
+    dialog.showMessageBox(updaterDialog).then((returnValue) => {
+        if (returnValue.response === 0) autoUpdater.quitAndInstall();
+    });
 });
