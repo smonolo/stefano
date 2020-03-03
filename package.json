@@ -1,7 +1,7 @@
 {
   "name": "stefano",
   "description": "Stefano",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "app.js",
   "author": "stevyb0t.it",
   "scripts": {
@@ -10,7 +10,7 @@
     "build-pack": "electron-builder --dir",
     "build-dist": "electron-builder && electron-builder install-app-deps",
     "build": "electron-builder build --win --publish never",
-    "deploy": "electron-builder builder --win --publish always"
+    "deploy": "electron-builder build --win --publish always"
   },
   "devDependencies": {
     "electron": "^7.1.9",
