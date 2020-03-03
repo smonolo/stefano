@@ -3,6 +3,7 @@ const Store = require('electron-store');
 const log = require('electron-log');
 const richPresence = require('discord-rich-presence')('648198569903390724');
 const open = require('open');
+const {autoUpdater} = require('electron-updater');
 
 const store = new Store();
 
@@ -32,6 +33,10 @@ app.on('ready', () => {
     if (!store.get('logins')) store.set('logins', 0);
 
     loadWin.loadFile(`${__dirname}/loadWin/index.html`).then();
+
+    loadWin.once('ready-to-show', () => {
+        autoUpdater.checkForUpdatesAndNotify().then();
+    });
 
     // Load once html is loaded
     loadWin.webContents.on('did-finish-load', () => loadWin.show());
@@ -148,3 +153,11 @@ app.on('window-all-closed', () => {if (process.platform !== 'darwin') app.quit()
 
 // Call window function on activation if there is no active window
 app.on('activate', () => {if (win === null) window()});
+
+autoUpdater.on('update-available', () => {
+    window.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+    window.webContents.send('update_downloaded');
+});

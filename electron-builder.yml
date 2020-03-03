@@ -1,0 +1,4 @@
+appId: it.stevyb0t.stefano
+publish:
+  provider: github
+  token: 61b6a0a93a177997cbe3ea4c33a72ad2d4b8ac1b
